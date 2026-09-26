@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="1200" height="600" font-family="'Zen Maru Gothic', ui-rounded, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#1f3f8f"/>
+    </marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#d6452f"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="600" fill="#fbf5ea"/>
+  <text x="40" y="48" font-size="25" font-weight="900" fill="#15234d">Two World products, two questions</text>
+  <text x="40" y="74" font-size="15" fill="#5d6789">IDKit answers "is it really you, right now, for this?"  AgentBook answers "whose assistant is this?"</text>
+
+  <!-- Lane 1: IDKit -->
+  <rect x="40" y="96" width="1120" height="232" rx="20" fill="#fffdf8" stroke="#d6452f" stroke-width="1.8"/>
+  <text x="64" y="128" font-size="13" font-weight="700" fill="#d6452f" letter-spacing="1.2">IDKIT · SELFIE CHECK IN A SESSION</text>
+  <g font-size="13.5">
+    <g transform="translate(64,146)">
+      <rect width="232" height="160" rx="14" fill="#fbe5df"/>
+      <text x="16" y="28" font-size="15" font-weight="900" fill="#15234d">Setup, once</text>
+      <text x="16" y="54" fill="#15234d">createSession + selfie</text>
+      <text x="16" y="74" fill="#5d6789">signal: house · name · nonce</text>
+      <text x="16" y="104" fill="#15234d">session id sealed in</text>
+      <text x="16" y="124" fill="#15234d">the house; the same proof</text>
+      <text x="16" y="144" fill="#15234d">lets the issuer mint the name</text>
+    </g>
+    <g transform="translate(330,146)">
+      <rect width="232" height="160" rx="14" fill="#fbe5df"/>
+      <text x="16" y="28" font-size="15" font-weight="900" fill="#15234d">Each release</text>
+      <text x="16" y="54" fill="#15234d">proveSession + selfie,</text>
+      <text x="16" y="74" fill="#15234d">in the setup session</text>
+      <text x="16" y="104" fill="#5d6789">signal: house · site · nonce</text>
+      <text x="16" y="124" fill="#5d6789">· hash(reason, assistant key)</text>
+      <text x="16" y="146" fill="#15234d">a different face fails</text>
+    </g>
+    <g transform="translate(596,146)">
+      <rect width="232" height="160" rx="14" fill="#f4ecdc"/>
+      <text x="16" y="28" font-size="15" font-weight="900" fill="#15234d">House verifies</text>
+      <text x="16" y="54" fill="#15234d">nonce, signal, session,</text>
+      <text x="16" y="74" fill="#15234d">selfie credential (schema 11)</text>
+      <text x="16" y="104" fill="#15234d">then World's /api/v4/verify,</text>
+      <text x="16" y="124" fill="#15234d">environment pinned by the</text>
+      <text x="16" y="144" fill="#15234d">house; each proof used once</text>
+    </g>
+    <g transform="translate(862,146)">
+      <rect width="274" height="160" rx="14" fill="#e4f0e5"/>
+      <text x="16" y="28" font-size="15" font-weight="900" fill="#15234d">Released</text>
+      <text x="16" y="54" fill="#15234d">code sealed to the</text>
+      <text x="16" y="74" fill="#15234d">assistant's one-time key,</text>
+      <text x="16" y="94" fill="#15234d">typed into the right tab</text>
+      <text x="16" y="124" fill="#c0392b" font-size="13">✕ declined · expired · replayed</text>
+      <text x="16" y="144" fill="#c0392b" font-size="13">✕ another face: nothing released</text>
+    </g>
+  </g>
+  <g stroke="#d6452f" stroke-width="2.2">
+    <line x1="296" y1="226" x2="328" y2="226" marker-end="url(#r)"/>
+    <line x1="562" y1="226" x2="594" y2="226" marker-end="url(#r)"/>
+    <line x1="828" y1="226" x2="860" y2="226" marker-end="url(#r)"/>
+  </g>
+
+  <!-- Lane 2: AgentBook -->
+  <rect x="40" y="348" width="1120" height="222" rx="20" fill="#fffdf8" stroke="#1f3f8f" stroke-width="1.8"/>
+  <text x="64" y="380" font-size="13" font-weight="700" fill="#1f3f8f" letter-spacing="1.2">WORLD ID FOR AGENTS · AGENTBOOK, THROUGH HORS</text>
+  <g font-size="13.5">
+    <g transform="translate(64,398)">
+      <rect width="232" height="150" rx="14" fill="#e7ecf7"/>
+      <text x="16" y="28" font-size="15" font-weight="900" fill="#15234d">Link an assistant</text>
+      <text x="16" y="54" fill="#15234d">hmail connect runs World's</text>
+      <text x="16" y="74" fill="#15234d">AgentKit registration;</text>
+      <text x="16" y="94" fill="#15234d">you scan once in World App</text>
+    </g>
+    <g transform="translate(330,398)">
+      <rect width="232" height="150" rx="14" fill="#e7ecf7"/>
+      <text x="16" y="28" font-size="15" font-weight="900" fill="#15234d">AgentBook</text>
+      <text x="16" y="54" fill="#15234d">on World Chain:</text>
+      <text x="16" y="74" fill="#15234d">wallet → your anonymous</text>
+      <text x="16" y="94" fill="#15234d">humanId</text>
+    </g>
+    <g transform="translate(596,398)">
+      <rect width="232" height="150" rx="14" fill="#f4ecdc"/>
+      <text x="16" y="28" font-size="15" font-weight="900" fill="#15234d">HORS gate, every call</text>
+      <text x="16" y="54" fill="#15234d">checks the signature,</text>
+      <text x="16" y="74" fill="#15234d">looks the wallet up,</text>
+      <text x="16" y="94" fill="#15234d">compares to the owner</text>
+    </g>
+    <g transform="translate(862,398)">
+      <rect width="274" height="150" rx="14" fill="#e4f0e5"/>
+      <text x="16" y="28" font-size="15" font-weight="900" fill="#15234d">Your assistants only</text>
+      <text x="16" y="54" fill="#15234d">search · read · attachment</text>
+      <text x="16" y="74" fill="#15234d">· use_code</text>
+      <text x="16" y="104" fill="#c0392b" font-size="13">✕ not in AgentBook · another</text>
+      <text x="16" y="124" fill="#c0392b" font-size="13">human · revoked · unsigned</text>
+    </g>
+  </g>
+  <g stroke="#1f3f8f" stroke-width="2.2">
+    <line x1="296" y1="473" x2="328" y2="473" marker-end="url(#a)"/>
+    <line x1="562" y1="473" x2="594" y2="473" marker-end="url(#a)"/>
+    <line x1="828" y1="473" x2="860" y2="473" marker-end="url(#a)"/>
+  </g>
+</svg>

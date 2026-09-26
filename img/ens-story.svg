@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" width="1200" height="420" font-family="'Zen Maru Gothic', ui-rounded, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#1f3f8f"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="420" fill="#fbf5ea"/>
+
+  <!-- before -->
+  <g transform="translate(40,36)">
+    <rect width="500" height="236" rx="22" fill="#fffdf8" stroke="#e6dac3" stroke-width="1.5"/>
+    <text x="28" y="44" font-size="13" font-weight="700" fill="#5d6789" letter-spacing="1.2">A HOUSE ON A LAPTOP, WITHOUT A NAME</text>
+    <g font-family="ui-monospace, Menlo, Consolas, monospace" font-size="13.5">
+      <text x="28" y="84" fill="#9aa3bd" text-decoration="line-through">https://ringtone-rolls-allowed.trycloudflare.com</text>
+      <text x="28" y="112" fill="#9aa3bd" text-decoration="line-through">https://syracuse-entities-stanford.trycloudflare.com</text>
+      <text x="28" y="140" fill="#15234d">https://became-tips-vacancies-tvs.trycloudflare.com</text>
+    </g>
+    <text x="28" y="182" font-size="16" fill="#15234d">A new address on every restart.</text>
+    <text x="28" y="208" font-size="16" fill="#15234d">Someone copies it to the assistant, again.</text>
+  </g>
+
+  <!-- after -->
+  <g transform="translate(660,36)">
+    <rect width="500" height="236" rx="22" fill="#fffdf8" stroke="#1f3f8f" stroke-width="2"/>
+    <text x="28" y="44" font-size="13" font-weight="700" fill="#1f3f8f" letter-spacing="1.2">WITH HMAIL: YOUR MAILBOX, FOR YOUR AGENTS</text>
+    <text x="28" y="100" font-size="40" font-weight="900" fill="#15234d">lyj.hmail.eth</text>
+    <text x="28" y="140" font-size="14" font-family="ui-monospace, Menlo, Consolas, monospace" fill="#1f3f8f">agent-endpoint[mcp] → today's address</text>
+    <text x="28" y="182" font-size="16" fill="#15234d">One name, for good. The house updates</text>
+    <text x="28" y="208" font-size="16" fill="#15234d">its own address each time it starts.</text>
+  </g>
+  <line x1="552" y1="154" x2="648" y2="154" stroke="#1f3f8f" stroke-width="3" marker-end="url(#a)"/>
+
+  <!-- guarantees -->
+  <g transform="translate(40,300)">
+    <rect width="356" height="84" rx="18" fill="#e4f0e5"/>
+    <rect x="22" y="26" width="22" height="18" rx="4" fill="#2f7a4f"/><path d="M26 26 v-6 a7 7 0 0 1 14 0 v6" fill="none" stroke="#2f7a4f" stroke-width="3"/>
+    <text x="60" y="38" font-size="17" font-weight="900" fill="#15234d">Only the house can move it</text>
+    <text x="60" y="62" font-size="14" fill="#5d6789">its key may write two records, nothing else</text>
+  </g>
+  <g transform="translate(422,300)">
+    <rect width="356" height="84" rx="18" fill="#fbe5df"/>
+    <circle cx="33" cy="34" r="11" fill="none" stroke="#d6452f" stroke-width="3"/><path d="M44 34 h14 M52 34 v7 M57 34 v5" stroke="#d6452f" stroke-width="3" stroke-linecap="round"/>
+    <text x="72" y="38" font-size="17" font-weight="900" fill="#15234d">The issuer lets go</text>
+    <text x="72" y="62" font-size="14" fill="#5d6789">it hands over the keys, then gives up its own</text>
+  </g>
+  <g transform="translate(804,300)">
+    <rect width="356" height="84" rx="18" fill="#e7ecf7"/>
+    <path d="M20 36 q16 -16 32 0 q-16 16 -32 0 z" fill="none" stroke="#1f3f8f" stroke-width="3"/><circle cx="36" cy="36" r="4.5" fill="#1f3f8f"/>
+    <text x="66" y="38" font-size="17" font-weight="900" fill="#15234d">Read live, every time</text>
+    <text x="66" y="62" font-size="14" fill="#5d6789">by assistants and the approval page</text>
+  </g>
+</svg>

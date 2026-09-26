@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" font-family="'Zen Maru Gothic', ui-rounded, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#1f3f8f"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="560" fill="#fbf5ea"/>
+  <text x="40" y="50" font-size="26" font-weight="900" fill="#15234d">Every house gets a name, and only the house can move it</text>
+  <text x="40" y="76" font-size="15" fill="#5d6789">ENSv2 on Sepolia: our own subname registry, one Permissioned Resolver per house, per-record roles.</text>
+
+  <!-- tree -->
+  <g font-size="15">
+    <rect x="40" y="110" width="220" height="64" rx="14" fill="#fffdf8" stroke="#e6dac3" stroke-width="1.5"/>
+    <text x="60" y="138" font-size="17" font-weight="900" fill="#15234d">.eth</text>
+    <text x="60" y="160" font-size="13" fill="#5d6789">ENSv2 ETH registry</text>
+
+    <rect x="40" y="206" width="220" height="80" rx="14" fill="#fffdf8" stroke="#1f3f8f" stroke-width="2"/>
+    <text x="60" y="234" font-size="17" font-weight="900" fill="#15234d">hmail.eth</text>
+    <text x="60" y="256" font-size="13" fill="#5d6789">sealed subregistry: UserRegistry</text>
+    <text x="60" y="274" font-size="13" fill="#5d6789">issuer holds ROLE_REGISTRAR</text>
+
+    <rect x="40" y="318" width="220" height="80" rx="14" fill="#fffdf8" stroke="#d6452f" stroke-width="2"/>
+    <text x="60" y="346" font-size="17" font-weight="900" fill="#15234d">you.hmail.eth</text>
+    <text x="60" y="368" font-size="13" fill="#5d6789">owner: the house key</text>
+    <text x="60" y="386" font-size="13" fill="#5d6789">max expiry, no parent roles</text>
+
+    <path d="M150 174 V204" stroke="#1f3f8f" stroke-width="2" marker-end="url(#a)"/>
+    <path d="M150 286 V316" stroke="#1f3f8f" stroke-width="2" marker-end="url(#a)"/>
+    <path d="M260 358 H330" stroke="#1f3f8f" stroke-width="2" marker-end="url(#a)"/>
+    <text x="268" y="348" font-size="12" fill="#1f3f8f">resolver</text>
+  </g>
+
+  <!-- resolver card -->
+  <rect x="334" y="110" width="500" height="400" rx="18" fill="#fffdf8" stroke="#e6dac3" stroke-width="1.5"/>
+  <text x="356" y="142" font-size="12" font-weight="700" fill="#5d6789" letter-spacing="1.2">ONE PER HOUSE</text>
+  <text x="356" y="170" font-size="20" font-weight="900" fill="#15234d">Permissioned Resolver</text>
+
+  <text x="356" y="206" font-size="13" font-weight="700" fill="#5d6789">RECORD</text>
+  <text x="600" y="206" font-size="13" font-weight="700" fill="#5d6789">WHO MAY SET IT</text>
+  <line x1="356" y1="216" x2="812" y2="216" stroke="#e6dac3"/>
+
+  <text x="356" y="244" font-size="14" font-family="ui-monospace, Menlo, Consolas, monospace" fill="#15234d">agent-endpoint[mcp]</text>
+  <rect x="600" y="228" width="190" height="26" rx="13" fill="#e4f0e5"/>
+  <text x="695" y="246" font-size="13" font-weight="700" fill="#2f7a4f" text-anchor="middle">house key only</text>
+  <text x="356" y="266" font-size="12.5" fill="#5d6789">the house's current tunnel URL, rewritten on every start</text>
+
+  <text x="356" y="304" font-size="14" font-family="ui-monospace, Menlo, Consolas, monospace" fill="#15234d">agent-endpoint[web]</text>
+  <rect x="600" y="288" width="190" height="26" rx="13" fill="#e4f0e5"/>
+  <text x="695" y="306" font-size="13" font-weight="700" fill="#2f7a4f" text-anchor="middle">house key only</text>
+  <text x="356" y="326" font-size="12.5" fill="#5d6789">the approval site the house sends you to</text>
+
+  <text x="356" y="364" font-size="14" font-family="ui-monospace, Menlo, Consolas, monospace" fill="#15234d">any other record</text>
+  <rect x="600" y="348" width="190" height="26" rx="13" fill="#f4ecdc"/>
+  <text x="695" y="366" font-size="13" font-weight="700" fill="#5d6789" text-anchor="middle">nobody</text>
+
+  <line x1="356" y1="392" x2="812" y2="392" stroke="#e6dac3"/>
+  <text x="356" y="420" font-size="14" fill="#15234d">Issuer's root roles on this resolver</text>
+  <rect x="600" y="404" width="190" height="26" rx="13" fill="#e4f0e5"/>
+  <text x="695" y="422" font-size="13" font-weight="700" fill="#2f7a4f" text-anchor="middle">renounced</text>
+  <text x="356" y="452" font-size="12.5" fill="#5d6789">grantSetterRoles gives the house exactly two records;</text>
+  <text x="356" y="470" font-size="12.5" fill="#5d6789">then the issuer revokes its own roles, checked on chain.</text>
+
+  <!-- readers -->
+  <text x="870" y="142" font-size="12" font-weight="700" fill="#5d6789" letter-spacing="1.2">WHO READS THE NAME</text>
+  <g font-size="14">
+    <rect x="870" y="158" width="290" height="80" rx="14" fill="#e7ecf7"/>
+    <text x="890" y="186" font-weight="900" fill="#1f3f8f">Assistants</text>
+    <text x="890" y="208" font-size="13" fill="#5d6789">hmail connect · search · type</text>
+    <text x="890" y="226" font-size="13" fill="#5d6789">resolve [mcp] on Sepolia, no cache</text>
+
+    <rect x="870" y="252" width="290" height="80" rx="14" fill="#fbe5df"/>
+    <text x="890" y="280" font-weight="900" fill="#d6452f">Approval page</text>
+    <text x="890" y="302" font-size="13" fill="#5d6789">shows the name, refuses unless [mcp]</text>
+    <text x="890" y="320" font-size="13" fill="#5d6789">matches the link and [web] is this site</text>
+
+    <rect x="870" y="346" width="290" height="80" rx="14" fill="#f4ecdc"/>
+    <text x="890" y="374" font-weight="900" fill="#15234d">ENS inspector</text>
+    <text x="890" y="396" font-size="13" fill="#5d6789">live records, roles and the tools the</text>
+    <text x="890" y="414" font-size="13" fill="#5d6789">house publishes (unsigned tools/list)</text>
+
+    <rect x="870" y="440" width="290" height="70" rx="14" fill="#fffdf8" stroke="#e6dac3"/>
+    <text x="890" y="468" font-weight="900" fill="#15234d">hors-cli</text>
+    <text x="890" y="490" font-size="13" fill="#5d6789">hors list you.hmail.eth (ENSIP-26)</text>
+  </g>
+</svg>

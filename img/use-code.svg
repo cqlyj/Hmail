@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 470" width="1200" height="470" font-family="'Zen Maru Gothic', ui-rounded, system-ui, -apple-system, 'Segoe UI', sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0 0 L10 5 L0 10 z" fill="#1f3f8f"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="470" fill="#fbf5ea"/>
+  <text x="40" y="50" font-size="26" font-weight="900" fill="#15234d">One login, start to finish</text>
+  <text x="40" y="76" font-size="15" fill="#5d6789">Top row: what happens when everything is right. Bottom row: what stops it when something isn't.</text>
+
+  <g font-size="14">
+    <!-- card template: x, width 208 -->
+    <g transform="translate(40,104)">
+      <rect width="208" height="190" rx="16" fill="#fffdf8" stroke="#e6dac3" stroke-width="1.5"/>
+      <circle cx="30" cy="32" r="15" fill="#1f3f8f"/><text x="30" y="37" text-anchor="middle" font-weight="900" fill="#fffdf8">1</text>
+      <text x="54" y="37" font-size="17" font-weight="900" fill="#15234d">Assistant asks</text>
+      <text x="18" y="74" fill="#15234d" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="12.5">use_code(</text>
+      <text xml:space="preserve" x="18" y="92" fill="#15234d" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="12.5">  "ethglobal.com",</text>
+      <text xml:space="preserve" x="18" y="110" fill="#15234d" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="12.5">  "log me in")</text>
+      <text x="18" y="142" fill="#5d6789">signed by its wallet;</text>
+      <text x="18" y="162" fill="#5d6789">HORS: same human only</text>
+    </g>
+    <g transform="translate(264,104)">
+      <rect width="208" height="190" rx="16" fill="#fffdf8" stroke="#e6dac3" stroke-width="1.5"/>
+      <circle cx="30" cy="32" r="15" fill="#1f3f8f"/><text x="30" y="37" text-anchor="middle" font-weight="900" fill="#fffdf8">2</text>
+      <text x="54" y="37" font-size="17" font-weight="900" fill="#15234d">You get a link</text>
+      <text x="18" y="74" fill="#15234d">A code from that site</text>
+      <text x="18" y="94" fill="#15234d">is being held, so the</text>
+      <text x="18" y="114" fill="#15234d">house opens an approval.</text>
+      <text x="18" y="142" fill="#5d6789">The page checks the</text>
+      <text x="18" y="162" fill="#5d6789">house's ENS name first.</text>
+    </g>
+    <g transform="translate(488,104)">
+      <rect width="208" height="190" rx="16" fill="#fbe5df" stroke="#d6452f" stroke-width="1.5"/>
+      <circle cx="30" cy="32" r="15" fill="#d6452f"/><text x="30" y="37" text-anchor="middle" font-weight="900" fill="#fffdf8">3</text>
+      <text x="54" y="37" font-size="17" font-weight="900" fill="#15234d">Your face</text>
+      <text x="18" y="74" fill="#15234d">World App Selfie Check,</text>
+      <text x="18" y="94" fill="#15234d">in your session from</text>
+      <text x="18" y="114" fill="#15234d">setup.</text>
+      <text x="18" y="142" fill="#5d6789">Bound to this site, this</text>
+      <text x="18" y="162" fill="#5d6789">reason, this key, once.</text>
+    </g>
+    <g transform="translate(712,104)">
+      <rect width="208" height="190" rx="16" fill="#fffdf8" stroke="#e6dac3" stroke-width="1.5"/>
+      <circle cx="30" cy="32" r="15" fill="#1f3f8f"/><text x="30" y="37" text-anchor="middle" font-weight="900" fill="#fffdf8">4</text>
+      <text x="54" y="37" font-size="17" font-weight="900" fill="#15234d">House verifies</text>
+      <text x="18" y="74" fill="#15234d">World's Verify API,</text>
+      <text x="18" y="94" fill="#15234d">server-side, then seals</text>
+      <text x="18" y="114" fill="#15234d">the code to the assistant.</text>
+      <text x="18" y="142" fill="#5d6789">X25519 + AES-GCM to a</text>
+      <text x="18" y="162" fill="#5d6789">one-time key. Spent now.</text>
+    </g>
+    <g transform="translate(936,104)">
+      <rect width="224" height="190" rx="16" fill="#fffdf8" stroke="#1f3f8f" stroke-width="2"/>
+      <circle cx="30" cy="32" r="15" fill="#1f3f8f"/><text x="30" y="37" text-anchor="middle" font-weight="900" fill="#fffdf8">5</text>
+      <text x="54" y="37" font-size="17" font-weight="900" fill="#15234d">Typed in</text>
+      <text x="18" y="74" fill="#15234d">The typist opens it in</text>
+      <text x="18" y="94" fill="#15234d">memory and types it into</text>
+      <text x="18" y="114" fill="#15234d">the ethglobal.com tab.</text>
+      <text x="18" y="142" fill="#2f7a4f" font-weight="700">No digits in the chat,</text>
+      <text x="18" y="162" fill="#2f7a4f" font-weight="700">the terminal or the logs.</text>
+    </g>
+  </g>
+
+  <g stroke="#1f3f8f" stroke-width="2" marker-end="url(#a)">
+    <line x1="248" y1="199" x2="262" y2="199"/>
+    <line x1="472" y1="199" x2="486" y2="199"/>
+    <line x1="696" y1="199" x2="710" y2="199"/>
+    <line x1="920" y1="199" x2="934" y2="199"/>
+  </g>
+
+  <text x="40" y="336" font-size="12" font-weight="700" fill="#5d6789" letter-spacing="1.2">WHEN SOMETHING IS WRONG, NOTHING IS RELEASED</text>
+  <g font-size="13.5">
+    <g transform="translate(40,350)">
+      <rect width="208" height="76" rx="12" fill="#fffdf8" stroke="#e6dac3" stroke-dasharray="4 4"/>
+      <text x="14" y="26" font-weight="700" fill="#c0392b">✕ evil.com</text>
+      <text x="14" y="46" fill="#5d6789">no code from that site:</text>
+      <text x="14" y="64" fill="#5d6789" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="12">NO_HELD_CODE</text>
+    </g>
+    <g transform="translate(264,350)">
+      <rect width="208" height="76" rx="12" fill="#fffdf8" stroke="#e6dac3" stroke-dasharray="4 4"/>
+      <text x="14" y="26" font-weight="700" fill="#c0392b">✕ a friend's assistant</text>
+      <text x="14" y="46" fill="#5d6789">another human:</text>
+      <text x="14" y="64" fill="#5d6789" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="12">HORS_ORIGIN_MISMATCH</text>
+    </g>
+    <g transform="translate(488,350)">
+      <rect width="208" height="76" rx="12" fill="#fffdf8" stroke="#e6dac3" stroke-dasharray="4 4"/>
+      <text x="14" y="26" font-weight="700" fill="#c0392b">✕ declined or too late</text>
+      <text x="14" y="46" fill="#5d6789">cancel in World App or</text>
+      <text x="14" y="64" fill="#5d6789">3-minute expiry</text>
+    </g>
+    <g transform="translate(712,350)">
+      <rect width="208" height="76" rx="12" fill="#fffdf8" stroke="#e6dac3" stroke-dasharray="4 4"/>
+      <text x="14" y="26" font-weight="700" fill="#c0392b">✕ replay</text>
+      <text x="14" y="46" fill="#5d6789">approval or code reused:</text>
+      <text x="14" y="64" fill="#5d6789" font-family="ui-monospace, Menlo, Consolas, monospace" font-size="12">APPROVAL_USED · CODE_SPENT</text>
+    </g>
+    <g transform="translate(936,350)">
+      <rect width="224" height="76" rx="12" fill="#fffdf8" stroke="#e6dac3" stroke-dasharray="4 4"/>
+      <text x="14" y="26" font-weight="700" fill="#c0392b">✕ "type it here" phishing</text>
+      <text x="14" y="46" fill="#5d6789">the visible tab isn't the</text>
+      <text x="14" y="64" fill="#5d6789">site: the typist refuses</text>
+    </g>
+  </g>
+</svg>
