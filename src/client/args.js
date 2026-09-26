@@ -67,7 +67,7 @@ export function parseClientArgs(argv, env, spec) {
   }
   return {
     service,
-    profile: parsed.values.profile ?? (env.HORS_PROFILE || "grokbot"),
+    profile: parsed.values.profile ?? (env.HORS_PROFILE || "hmail-assistant"),
     home: parsed.values.home,
     values: parsed.values,
     rest: parsed.positionals.slice(1),
