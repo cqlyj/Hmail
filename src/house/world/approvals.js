@@ -337,22 +337,43 @@ export class ApprovalManager {
   }
 
   /**
+   * @param {StoredApproval | undefined} approval
+   * @param {{ site: string, reason: string, callerAddress: string, recipientKey: string }} expected
+   */
+  matches(approval, { site, reason, callerAddress, recipientKey }) {
+    return Boolean(
+      approval &&
+        approval.site === site &&
+        approval.reason === reason &&
+        approval.callerAddress === callerAddress &&
+        approval.bind &&
+        approval.bind.recipientKey === recipientKey,
+    );
+  }
+
+  /**
+   * The status an approval has for this exact request, without spending it.
+   * @param {string} id
+   * @param {{ site: string, reason: string, callerAddress: string, recipientKey: string }} expected
+   * @returns {{ status: ApprovalStatus | "unknown", code?: string }}
+   */
+  peek(id, expected) {
+    const approval = this.items.get(id);
+    if (!approval || !this.matches(approval, expected)) return { status: "unknown" };
+    const status = this.effective(approval);
+    if (status === "denied") return { status, code: approval.code ?? undefined };
+    return { status };
+  }
+
+  /**
+   * Spends an approved approval, once.
    * @param {string} id
    * @param {{ site: string, reason: string, callerAddress: string, recipientKey: string }} expected
    * @returns {{ status: "approved", approval: StoredApproval } | { status: ApprovalStatus | "unknown", code?: string }}
    */
-  consume(id, { site, reason, callerAddress, recipientKey }) {
+  consume(id, expected) {
     const approval = this.items.get(id);
-    if (
-      !approval ||
-      approval.site !== site ||
-      approval.reason !== reason ||
-      approval.callerAddress !== callerAddress ||
-      !approval.bind ||
-      approval.bind.recipientKey !== recipientKey
-    ) {
-      return { status: "unknown" };
-    }
+    if (!approval || !this.matches(approval, expected)) return { status: "unknown" };
     const status = this.effective(approval);
     if (status === "approved") {
       approval.status = "used";

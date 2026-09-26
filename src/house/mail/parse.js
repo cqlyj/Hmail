@@ -30,3 +30,22 @@ export async function parseMail(raw) {
     })),
   };
 }
+
+/**
+ * One attachment's bytes, by the filename the mail view shows ("(unnamed)" for none).
+ * @param {Buffer | Uint8Array | string} raw
+ * @param {string} filename
+ * @returns {Promise<{ filename: string, mimeType: string, content: Buffer } | null>}
+ */
+export async function attachmentContent(raw, filename) {
+  const parsed = await PostalMime.parse(raw);
+  const item = (parsed.attachments ?? []).find(
+    (a) => (a.filename ? a.filename : "(unnamed)") === filename,
+  );
+  if (!item || !item.content) return null;
+  const content =
+    typeof item.content === "string"
+      ? Buffer.from(item.content, "utf8")
+      : Buffer.from(item.content instanceof ArrayBuffer ? new Uint8Array(item.content) : item.content);
+  return { filename, mimeType: item.mimeType || "application/octet-stream", content };
+}

@@ -21,5 +21,7 @@ export async function createHouseGate(cfg, mcpUrls, identity) {
     origins: mcpUrls,
     deny: identity.deny ?? [],
     dev: { mockOrigin: cfg.mock },
+    // use_code's face-check rule opens a World request (signer + IDKit) before it can answer.
+    ruleTimeoutMs: 25_000,
   });
 }

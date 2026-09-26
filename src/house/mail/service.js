@@ -1,4 +1,5 @@
 import { placeholder } from "./render.js";
+import { attachmentContent } from "./parse.js";
 import { processMessage } from "./process.js";
 
 const CACHE_MAX = 500;
@@ -64,6 +65,16 @@ export function createMailService({ gmail, store }) {
   }
 
   return {
+    /** The processed mail (held items included), for rules that need to look at it. */
+    load,
+    /**
+     * @param {string} id
+     * @param {string} filename
+     */
+    async attachment(id, filename) {
+      const message = await gmail.getRaw(id);
+      return attachmentContent(message.raw, filename);
+    },
     async search(query, max) {
       const ids = await gmail.listIds(query, max);
       return pool(ids, 5, (id) => load(id));

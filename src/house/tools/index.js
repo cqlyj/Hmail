@@ -1,3 +1,4 @@
+import { registerAttachment } from "./attachment.js";
 import { mailPolicy } from "./mail-policy.js";
 import { registerPair } from "./pair.js";
 import { registerPing } from "./ping.js";
@@ -10,6 +11,7 @@ export function registerTools(gated, deps) {
   registerPing(gated);
   registerSearch(gated, deps, policy);
   registerRead(gated, deps, policy);
+  registerAttachment(gated, deps);
   registerUseCode(gated, deps);
   registerPair(gated, deps);
 }

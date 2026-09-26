@@ -8,6 +8,25 @@ function reply(text) {
 }
 
 /**
+ * HORS rule: once the house has an owner, only that human's assistants may call pair.
+ * @param {import("../house-config.js").HouseConfigState} state
+ * @returns {import("hors-sdk").Rule}
+ */
+function ownedByAnother(state) {
+  return (ctx) => {
+    if (state.owner === null) return true;
+    const caller = ctx.callerHumanId;
+    if (typeof caller === "string" && caller.toLowerCase() === state.owner.toLowerCase()) {
+      return true;
+    }
+    return {
+      deny: "this house belongs to a different World ID; only assistants linked to the owner can connect",
+      code: "ALREADY_PAIRED",
+    };
+  };
+}
+
+/**
  * @param {import("hors-sdk/mcp").HorsMcpServer} gated
  * @param {{ pair: { state: import("../house-config.js").HouseConfigState, requests: ReturnType<import("../pairing.js").createPairRequests> } }} deps
  */
@@ -21,8 +40,9 @@ export function registerPair(gated, deps) {
       inputSchema: z.object({}),
       hors: {
         origin: "any-human",
+        rule: ownedByAnother(deps.pair.state),
         describe:
-          "Any registered human's agent. The owner approves the request on the house's page.",
+          "Any registered human's agent, while the house has no owner (or for the owner's own agents). The owner approves the request on the house's page.",
       },
     },
     async (_args, ctx) => {
@@ -30,16 +50,8 @@ export function registerPair(gated, deps) {
       const callerHumanId = ctx.hors.callerHumanId;
       const callerAddress = String(ctx.hors.callerAddress ?? "").toLowerCase();
       if (state.owner !== null) {
-        if (
-          typeof callerHumanId === "string" &&
-          callerHumanId.toLowerCase() === state.owner.toLowerCase()
-        ) {
-          return reply("paired: your human owns this house");
-        }
-        ctx.hors.deny(
-          "this house belongs to a different World ID; only assistants linked to the owner can connect",
-          { code: "ALREADY_PAIRED" },
-        );
+        // The rule already turned away every other human.
+        return reply("paired: your human owns this house");
       }
       if (typeof callerHumanId !== "string" || callerAddress === "") {
         ctx.hors.deny("this assistant is not linked to a World ID", {

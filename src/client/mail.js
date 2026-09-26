@@ -1,3 +1,5 @@
+import { writeFile } from "node:fs/promises";
+import { basename } from "node:path";
 import { UsageError } from "../shared/cli.js";
 import { parseClientArgs } from "./args.js";
 import { callHouse } from "./call.js";
@@ -78,4 +80,42 @@ export async function runRead(argv, env) {
       env,
     }),
   );
+}
+
+/** @param {string[]} argv @param {NodeJS.ProcessEnv} env @returns {Promise<number>} */
+export async function runAttachment(argv, env) {
+  const parsed = parseClientArgs(argv, env, {
+    positionals: 3,
+    usage: "attachment needs your house's name, a mail id and a filename",
+    options: { out: { type: "string" } },
+  });
+  const [id, filename] = parsed.rest;
+  const out =
+    typeof parsed.values.out === "string"
+      ? parsed.values.out
+      : basename(filename).replace(/[^\w.() -]/g, "_") || "attachment";
+  try {
+    const outcome = await callHouse({
+      service: parsed.service,
+      fn: "attachment",
+      args: { id, filename },
+      profile: parsed.profile,
+      home: parsed.home,
+      env,
+    });
+    if (!outcome.ok || outcome.result.isError === true) return report(outcome);
+    const block = (outcome.result.content ?? []).find(
+      (item) => item.type === "resource" && item.resource && typeof item.resource.blob === "string",
+    );
+    if (!block) {
+      process.stderr.write("error: the house sent no file\n");
+      return 1;
+    }
+    const bytes = Buffer.from(block.resource.blob, "base64");
+    await writeFile(out, bytes);
+    process.stdout.write(`saved ${out} (${bytes.byteLength} bytes)\n`);
+    return 0;
+  } catch (err) {
+    return reportError(err);
+  }
 }
