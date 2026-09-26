@@ -577,7 +577,7 @@ footer .wrap {
 
 .art-phone {
   width: min(100%, 290px);
-  justify-self: end;
+  justify-self: center;
   text-align: center;
 }
 
