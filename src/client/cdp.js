@@ -41,15 +41,17 @@ function asText(data) {
   return String(data);
 }
 
-/** Scans /proc/<pid>/cmdline for processes whose content matches /chrom/i and /--remote-debugging-port=(\d+)/ (regex over the whole file content, not split on \0).
- *  Returns the first port whose http://127.0.0.1:<port>/json/version answers 200 within 1 s, else null. No env var or flag overrides this. */
-export async function findCdpPort() {
+/** Ports Chrome is usually started with (--remote-debugging-port), tried when /proc can't be scanned (macOS, Windows) or names none. */
+const COMMON_PORTS = [9222, 9223, 9224, 9225, 9226, 9227, 9228, 9229];
+
+/** Ports named by running Chrome processes: /proc/<pid>/cmdline matching /chrom/i and --remote-debugging-port=N. Linux only; [] elsewhere. */
+async function portsFromProc() {
   /** @type {string[]} */
   let names;
   try {
     names = await readdir("/proc");
   } catch {
-    return null;
+    return [];
   }
   /** @type {number[]} */
   const ports = [];
@@ -70,17 +72,34 @@ export async function findCdpPort() {
     if (!Number.isInteger(port) || port < 1 || port > 65535) continue;
     ports.push(port);
   }
-  for (const port of ports) {
-    try {
-      const res = await fetch(`http://127.0.0.1:${port}/json/version`, {
-        signal: AbortSignal.timeout(1000),
-      });
-      const ok = res.status === 200;
+  return ports;
+}
+
+/** True when http://127.0.0.1:<port>/json/version answers 200 within 1 s and names a Chrome-family browser. */
+async function isChromeEndpoint(port) {
+  try {
+    const res = await fetch(`http://127.0.0.1:${port}/json/version`, {
+      signal: AbortSignal.timeout(1000),
+    });
+    if (res.status !== 200) {
       await res.body?.cancel().catch(() => {});
-      if (ok) return port;
-    } catch {
-      // This port is not a live debugging endpoint.
+      return false;
     }
+    const body = await res.json();
+    return typeof body?.Browser === "string" && /chrom|edg\//i.test(body.Browser);
+  } catch {
+    return false;
+  }
+}
+
+/** The local Chrome DevTools port: first the ports running Chrome processes name in /proc (Linux), then the
+ *  common ports 9222-9229 (macOS, Windows, or a Chrome /proc can't see). Only a live endpoint on 127.0.0.1
+ *  that reports a Chrome-family browser is used. Returns null when there is none. */
+export async function findCdpPort() {
+  const fromProc = await portsFromProc();
+  const candidates = [...fromProc, ...COMMON_PORTS.filter((port) => !fromProc.includes(port))];
+  for (const port of candidates) {
+    if (await isChromeEndpoint(port)) return port;
   }
   return null;
 }

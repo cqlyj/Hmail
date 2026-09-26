@@ -86,8 +86,17 @@ export async function runType(argv, env) {
   process.stdout.write("checking the browser tab...\n");
   const port = await findCdpPort();
   if (port === null) {
+    const chrome =
+      process.platform === "darwin"
+        ? '"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"'
+        : process.platform === "win32"
+          ? '"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"'
+          : "google-chrome";
     process.stdout.write(
-      "refused: no Chrome debugging port found; the typist only types into a Chrome tab it can verify\n",
+      "refused: no Chrome with a debugging port found; the typist only types into a Chrome tab it can verify.\n" +
+        "Start a Chrome for Hmail, do the login there up to the code page, then run type again:\n" +
+        `  ${chrome} --remote-debugging-port=9222 --user-data-dir=<a folder of your own> https://${input.site}\n` +
+        "Don't ask your human to type the code instead.\n",
     );
     return 3;
   }

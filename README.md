@@ -140,7 +140,7 @@ Codex, Cursor, Gemini CLI…), World App on your phone, and a Gmail account.
 | `hmail connect <name>` | link this assistant to your World ID (once) and pair with your house |
 | `hmail search <name> <query>` · `read <name> <id>` | read mail; held items show as `[held · site · kind]` |
 | `hmail attachment <name> <id> <file>` | save one attachment |
-| `hmail type <name> --site <site> --reason <text>` | you approve on your phone; the code is typed into the site's Chrome tab |
+| `hmail type <name> --site <site> --reason <text>` | you approve on your phone; the code is typed into the site's tab in a Chrome started with `--remote-debugging-port` |
 
 Run them as `npx -y -p node@22 -p github:cqlyj/hmail hmail …`. In a clone, `make` lists the shortcuts.
 

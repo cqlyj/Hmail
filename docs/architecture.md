@@ -121,7 +121,8 @@ sequenceDiagram
 - **Sealing.** X25519 key agreement with a fresh ephemeral key, HKDF-SHA256, then AES-256-GCM with the
   site and approval id as associated data. Only the typist that made the request holds the private key,
   and only in memory.
-- **The typist.** It finds Chrome's DevTools port, requires exactly one visible tab whose origin is
+- **The typist.** It finds Chrome's DevTools port on 127.0.0.1 (from running Chrome processes on Linux,
+  else the usual ports 9222-9229; the endpoint must report a Chrome-family browser), requires exactly one visible tab whose origin is
   `https://<site>` (or a subdomain) with a text field focused, and checks this before asking and again
   after approval. It types the code one character at a time with `Input.insertText` and presses Enter.
   It never prints the code; errors are generic.
