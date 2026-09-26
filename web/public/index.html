@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Hmail</title>
+    <meta name="description" content="Let AI assistants read your Gmail while your login codes stay locked until you approve with World ID." />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/zen-maru-gothic-900.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header class="wrap wide topbar">
+      <a class="brand" href="/">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1f3f8f"/><path d="M7.5 10.5h17v11h-17z" fill="none" stroke="#fbf5ea" stroke-width="2" stroke-linejoin="round"/><path d="m8 11 8 6.2 8-6.2" fill="none" stroke="#fbf5ea" stroke-width="2" stroke-linejoin="round"/><circle cx="24.5" cy="23.5" r="5" fill="#d6452f" stroke="#1f3f8f" stroke-width="1.5"/></svg>
+        Hmail
+      </a>
+      <nav>
+        <a href="/inspect.html">Look up a house</a>
+        <a href="https://github.com/cqlyj/hmail">GitHub</a>
+      </nav>
+    </header>
+
+    <main class="wrap wide">
+      <section class="hero">
+        <div>
+          <h1>Let AI read your mail. <em>Keep your codes.</em></h1>
+          <p class="lead">Login codes and sign-in links stay locked until you approve them with your face.</p>
+          <div class="cta row">
+            <button id="copy-setup" class="btn primary" type="button">Copy setup prompt</button>
+            <a class="btn secondary" href="http://localhost:8390">Open my house</a>
+          </div>
+          <p class="muted small">Paste it into an AI assistant on your own computer.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="art-card">
+            <div class="art-label">What your assistant sees</div>
+            <div class="art-mail">
+              <div class="art-from">ETHGlobal &lt;hello@ethglobal.com&gt;</div>
+              Your code is <span class="held">[held · ethglobal.com · login code]</span>
+            </div>
+          </div>
+          <div class="art-card art-phone">
+            <div class="art-label">On your phone</div>
+            <div class="art-site">ethglobal.com</div>
+            <div class="seal">✓</div>
+            <div class="art-done">Approved. Typed in, never shown.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid three steps-3" aria-label="How it works">
+        <div class="card flat">
+          <div class="num">1</div>
+          <h3>Set up in 3 minutes</h3>
+          <p class="muted small">Gmail, a name, one face scan.</p>
+        </div>
+        <div class="card flat">
+          <div class="num">2</div>
+          <h3>Connect your assistant</h3>
+          <p class="muted small">Send it one message.</p>
+        </div>
+        <div class="card flat">
+          <div class="num red">3</div>
+          <h3>Approve each login</h3>
+          <p class="muted small">Your face, one site, one time.</p>
+        </div>
+      </section>
+
+      <section class="card flat">
+        <details class="fold">
+          <summary>What does the setup prompt say?</summary>
+          <pre class="prompt-text" id="setup-prompt"></pre>
+        </details>
+        <details class="fold">
+          <summary>What stays private?</summary>
+          <ul class="checklist">
+            <li>Your mail, Gmail token and codes stay on your computer. Our servers never see them.</li>
+            <li>A code is only released to the site that sent it, checked against the sender's signature.</li>
+            <li>Your assistant never sees a code. It's typed straight into the right tab.</li>
+            <li>Only assistants linked to your World ID can use your house.</li>
+          </ul>
+        </details>
+        <details class="fold">
+          <summary>Already set up?</summary>
+          <p class="muted">Your house page is always at <a href="http://localhost:8390">localhost:8390</a> on the computer running Hmail.</p>
+        </details>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap wide">
+        <span>Hmail · your mail stays home</span>
+        <span><a href="/inspect.html">ENS inspector</a></span>
+      </div>
+    </footer>
+
+    <script src="/common.js"></script>
+    <script src="/index.js"></script>
+  </body>
+</html>
