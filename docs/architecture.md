@@ -123,10 +123,11 @@ sequenceDiagram
   and only in memory.
 - **The typist.** It finds Chrome's DevTools port on 127.0.0.1 (from running Chrome processes on Linux,
   else the usual ports 9222-9229; the endpoint must report a Chrome-family browser), requires exactly one visible tab whose origin is
-  `https://<site>` (or a subdomain) with its code field focused (if none is, it focuses the one-time-code
-  input or the first empty box of a split code itself), and checks this before asking and again
-  after approval. It types the code one character at a time with `Input.insertText` and presses Enter.
-  It never prints the code; errors are generic.
+  `https://<site>` (or a subdomain) with a code field focused, never an email or search box (if none is
+  focused, it focuses the one-time-code input or the first empty box of a split code itself), and checks this before asking and again
+  after approval. It types the code one character at a time with `Input.insertText`, checks the code
+  actually landed in the page (or the page moved on), and only then presses Enter; otherwise it says so
+  instead of reporting success. It never prints the code; errors are generic.
 - **No relay needed.** The house page lists every pending approval with its site, reason and QR, so
   the owner can approve as soon as the assistant asks, without waiting for it to pass the link on.
 - **Limits.** An approval lives 3 minutes; a caller may have at most 2 pending (5 per house).

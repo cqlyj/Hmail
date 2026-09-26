@@ -249,7 +249,7 @@
       "Afterwards, use the same prefix (" + CLI + ") with:",
       "- search " + name + " \"<Gmail search>\"  and  read " + name + " <id>  to read my mail. Login codes and links show up as [held · site · kind]; that's expected.",
       "- type " + name + " --site <site> --reason \"<why>\"  when you need a login code for a site.",
-      "  It only types into a Chrome started with a debugging port. If your browser tool doesn't have one, start your own Chrome for Hmail and do the login there, up to the code page:",
+      "  It only types into a Chrome started with a debugging port. If your browser tool doesn't have one, start your own Chrome for Hmail and do the whole login there (enter my email there too), up to the code page. Your built-in browser is a different browser that Hmail can't see:",
       "     google-chrome --remote-debugging-port=9222 --user-data-dir=~/hmail/chrome https://<site>",
       "     (on a Mac: \"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\" with the same flags; chromium works too)",
       "  Then run type. It prints an approval link: send it to me right away, as a QR code too if you can. It expires in 3 minutes (I can also approve it from my Hmail page). Keep type running: it types the code straight into that site's tab once I approve.",

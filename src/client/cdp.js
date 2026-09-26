@@ -1,30 +1,46 @@
 import { readdir, readFile } from "node:fs/promises";
 
-const TAB_EXPR = `JSON.stringify({
-  o: location.origin,
-  v: document.visibilityState,
-  a: (() => {
+/** Page-side helpers shared by the expressions below. A "code field" is a visible, enabled text-like input
+ *  (never email or search) that looks like it takes a code: autocomplete="one-time-code", a short maxlength,
+ *  a numeric inputmode, a code/otp/pin-like name or label, or the only input on the page. */
+const PAGE_HELPERS = `
+  const kinds = ["", "text", "tel", "number", "password"];
+  const usable = (e) =>
+    e && e.tagName === "INPUT" && !e.disabled && !e.readOnly && e.getClientRects().length > 0 &&
+    kinds.includes((e.type || "").toLowerCase());
+  const inputs = () => [...document.querySelectorAll("input")].filter(usable);
+  const hinted = (e) =>
+    /code|otp|pin|token|verif|passcode|2fa|mfa/i.test([e.name, e.id, e.getAttribute("aria-label"), e.placeholder].join(" "));
+  const isCode = (e) =>
+    usable(e) &&
+    ((e.autocomplete || "").toLowerCase() === "one-time-code" ||
+      (e.maxLength > 0 && e.maxLength <= 10) ||
+      /numeric|decimal/.test(e.inputMode || "") ||
+      hinted(e) ||
+      inputs().length === 1);
+  const deepActive = () => {
     let e = document.activeElement;
     while (e && e.shadowRoot && e.shadowRoot.activeElement) e = e.shadowRoot.activeElement;
-    if (!e) return null;
-    return {
-      t: e.tagName,
-      ty: (e.type || "").toLowerCase(),
-      ce: !!e.isContentEditable,
-      dis: !!e.disabled,
-      ro: !!e.readOnly,
-    };
-  })(),
-})`;
+    return e;
+  };
+`;
 
-/** Focuses the page's code field when nothing is focused: an autocomplete="one-time-code" input, else the
- *  first empty box of a split code (4+ inputs with maxlength 1), else the only numeric input, else the only
- *  text input. Only visible, enabled, text-like inputs count. Returns whether a field now has focus. */
+const TAB_EXPR = `(() => {
+  ${PAGE_HELPERS}
+  return JSON.stringify({
+    o: location.origin,
+    p: location.pathname,
+    v: document.visibilityState,
+    code: isCode(deepActive()),
+  });
+})()`;
+
+/** Focuses the page's code field when none is focused: an autocomplete="one-time-code" input, else the first
+ *  empty box of a split code (4+ inputs with maxlength 1), else the only numeric input, else the only
+ *  code-like input. Returns whether a code field now has focus. */
 const FOCUS_EXPR = `(() => {
-  const kinds = ["", "text", "tel", "number", "password", "email", "search"];
-  const usable = (e) =>
-    !e.disabled && !e.readOnly && e.getClientRects().length > 0 && kinds.includes((e.type || "").toLowerCase());
-  const all = [...document.querySelectorAll("input")].filter(usable);
+  ${PAGE_HELPERS}
+  const all = inputs();
   let pick = all.find((e) => (e.autocomplete || "").toLowerCase() === "one-time-code");
   if (!pick) {
     const boxes = all.filter((e) => e.maxLength === 1);
@@ -34,21 +50,29 @@ const FOCUS_EXPR = `(() => {
     const numeric = all.filter((e) => /numeric|decimal/.test(e.inputMode || ""));
     if (numeric.length === 1) pick = numeric[0];
   }
-  if (!pick && all.length === 1) pick = all[0];
+  if (!pick) {
+    const codes = all.filter(isCode);
+    if (codes.length === 1) pick = codes[0];
+  }
   if (!pick) return false;
   pick.focus();
-  return document.activeElement === pick;
+  return isCode(deepActive());
 })()`;
 
-const TEXT_INPUTS = new Set([
-  "",
-  "text",
-  "tel",
-  "number",
-  "password",
-  "email",
-  "search",
-]);
+/** After typing: did the code land in the page (in the focused field or across split boxes), or did the page
+ *  move on (it submitted by itself)? Never returns the code or any field value. */
+function landedExpr(code, href) {
+  return `(() => {
+    ${PAGE_HELPERS}
+    const want = ${JSON.stringify(code)};
+    const e = deepActive();
+    const joined = [...document.querySelectorAll("input")].map((i) => i.value || "").join("").replace(/[\\s-]/g, "");
+    return JSON.stringify({
+      moved: location.href !== ${JSON.stringify(href)},
+      has: joined.includes(want) || ((e && e.value) || "").replace(/[\\s-]/g, "").includes(want),
+    });
+  })()`;
+}
 
 /**
  * @param {string | ArrayBuffer | ArrayBufferView} data
@@ -245,6 +269,15 @@ async function connectPage(target) {
       if (result.exceptionDetails) throw new Error("cdp evaluate failed");
       return result.result ? result.result.value : undefined;
     },
+    /** Whether the code shows up in the page (or the page moved on) after typing. @param {string} code @param {string} href */
+    async landed(code, href) {
+      const raw = await this.evaluate(landedExpr(code, href));
+      const out = JSON.parse(String(raw));
+      return out.moved === true || out.has === true;
+    },
+    async href() {
+      return String(await this.evaluate("location.href"));
+    },
     /** @param {string} ch */
     async insertText(ch) {
       await send("Input.insertText", { text: ch });
@@ -299,23 +332,14 @@ function originMatches(origin, site) {
 /**
  * @param {{ t?: string, ty?: string, ce?: boolean, dis?: boolean, ro?: boolean } | null} active
  */
-function fieldReady(active) {
-  if (!active || typeof active !== "object") return false;
-  if (active.dis || active.ro) return false;
-  if (active.ce) return true;
-  if (active.t === "TEXTAREA") return true;
-  if (active.t === "INPUT" && TEXT_INPUTS.has(active.ty ?? "")) return true;
-  return false;
-}
-
 /**
  * @param {number} port
  * @param {string} site
- * @returns {Promise<{ ok: true, page: Awaited<ReturnType<typeof connectPage>> } | { ok: false, reason: string }>}
+ * @returns {Promise<{ ok: true, page: Awaited<ReturnType<typeof connectPage>>, where: string } | { ok: false, reason: string }>}
  */
 export async function inspectTab(port, site) {
   const targets = await listPages(port);
-  /** @type {{ page: Awaited<ReturnType<typeof connectPage>>, info: { o?: string, v?: string, a?: { t?: string, ty?: string, ce?: boolean, dis?: boolean, ro?: boolean } | null } }[]} */
+  /** @type {{ page: Awaited<ReturnType<typeof connectPage>>, info: { o?: string, p?: string, v?: string, code?: boolean } }[]} */
   const opened = [];
   for (const target of targets) {
     /** @type {Awaited<ReturnType<typeof connectPage>> | undefined} */
@@ -366,26 +390,26 @@ export async function inspectTab(port, site) {
       reason: `the visible tab is ${chosen.info.o}, not ${site}`,
     };
   }
-  if (!fieldReady(chosen.info.a ?? null)) {
+  if (chosen.info.code !== true) {
     // Split code boxes often lose focus when the assistant switches to its terminal: focus the code field
     // ourselves. The origin is already verified, so this can only pick a field on the site itself.
+    let focused = false;
     try {
       if ((await chosen.page.evaluate(FOCUS_EXPR)) === true) {
         const again = JSON.parse(String(await chosen.page.evaluate(TAB_EXPR)));
-        if (originMatches(again.o ?? "", site) && fieldReady(again.a ?? null)) {
-          closeExcept(chosen);
-          return { ok: true, page: chosen.page };
-        }
+        focused = originMatches(again.o ?? "", site) && again.code === true;
       }
     } catch {
-      // fall through to the refusal below
+      focused = false;
     }
-    closeExcept(null);
-    return {
-      ok: false,
-      reason: `no code field found on ${site}; open the page where the site asks for the code, click into the code box, then run type again`,
-    };
+    if (!focused) {
+      closeExcept(null);
+      return {
+        ok: false,
+        reason: `no code field on the visible ${site} tab (${chosen.info.p ?? "/"}); do the whole login in this Chrome (the one with the debugging port) until the site asks for the code, then run type again`,
+      };
+    }
   }
   closeExcept(chosen);
-  return { ok: true, page: chosen.page };
+  return { ok: true, page: chosen.page, where: `${chosen.info.o}${chosen.info.p ?? ""}` };
 }

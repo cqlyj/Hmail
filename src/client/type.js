@@ -115,6 +115,7 @@ export async function runType(argv, env) {
     return 3;
   }
   first.page.close();
+  process.stdout.write(`code field found on ${first.where} (in the Chrome on port ${port})\n`);
 
   const rec = newRecipient();
   const args = {
@@ -233,12 +234,16 @@ export async function runType(argv, env) {
       return 3;
     }
     const page = again.page;
+    let landed = false;
     try {
+      const href = await page.href();
       for (const ch of chars) {
         await page.insertText(ch);
         await sleep(60);
       }
-      if (!input.noSubmit) await page.pressEnter();
+      await sleep(250);
+      landed = await page.landed(chars, href);
+      if (landed && !input.noSubmit && (await page.href()) === href) await page.pressEnter();
     } catch {
       try {
         page.close();
@@ -249,6 +254,13 @@ export async function runType(argv, env) {
       return 1;
     }
     page.close();
+    if (!landed) {
+      process.stdout.write(
+        `refused after approval: the code didn't show up in the ${input.site} page, so it was not submitted (code spent).\n` +
+          "Check that you did the login in the Chrome on the debugging port, and that it's on the code step; then ask the site for a new code and run type again.\n",
+      );
+      return 3;
+    }
     if (input.noSubmit) {
       process.stdout.write(
         `typed into ${input.site} (not submitted), code spent\n`,
