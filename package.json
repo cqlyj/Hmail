@@ -2,11 +2,11 @@
   "name": "hmail",
   "version": "0.0.0",
   "private": true,
-  "description": "Hmail house: holds login codes from your Gmail until you approve with World ID",
+  "description": "Hmail: holds login codes from your Gmail until you approve with a World ID Selfie Check (house + assistant client)",
   "type": "module",
   "bin": { "hmail": "bin/hmail.js" },
   "files": ["bin", "src"],
-  "engines": { "node": ">=20.19" },
+  "engines": { "node": ">=22.19" },
   "dependencies": {
     "@hono/node-server": "2.1.1",
     "@modelcontextprotocol/client": "2.0.0",
