@@ -4,7 +4,7 @@ Hmail uses World in two places, for two different questions.
 
 | Question | World product | Where |
 | --- | --- | --- |
-| *Is it really my human, right now, approving this site?* | **IDKit**, Selfie Check credential, in a **session** | every code release; once at setup |
+| *Is it really my human, still the same one, right now, approving this site?* | **IDKit**, Selfie Check credential, in a **session** (continuity) | every code release; once at setup |
 | *Which human does this assistant belong to?* | **World ID for Agents**: AgentBook, through HORS | every call to the house |
 
 ![Two World products, two questions](../img/world.svg)
@@ -16,7 +16,7 @@ assistant with Gmail access. The product event that needs trust is **releasing o
 one site**. Before that happens, Hmail needs to know three things:
 
 1. a **real, live person** is approving, not a script or the assistant itself;
-2. it is **the same person** who set up the house, not just any verified human;
+2. it is **still the same person** who set up the house, not just any verified human (continuity);
 3. they are approving **this site, for this reason, for this request**, and nothing else.
 
 ## Why a Selfie Check session
@@ -28,6 +28,24 @@ one site**. Before that happens, Hmail needs to know three things:
 | Device | proves a device, not a person |
 | **Selfie Check** | a **live face** check each time, which is what "a person approves this, now" needs |
 | **…in a session** | `createSession` at setup ties the house to one person; every release is a `proveSession` in that session, so only the same person can approve. A different face cannot produce a proof for the house's session |
+
+### Continuity: still you, at every step
+
+A single Selfie Check proves *a* live person. Hmail needs more than that: over the whole life of a house
+(setup, then every login code for weeks), it has to be **the same person** each time. IDKit sessions are
+exactly this continuity check, and Hmail runs it on every release:
+
+1. **Setup:** `createSession` with a Selfie Check. The house seals the session id in its vault.
+2. **Every release:** a fresh Selfie Check, proved *in that session* (`proveSession`), for this site, this
+   reason and this request.
+3. **The house checks the continuity itself:** the proof's `session_id` must equal the one saved at setup
+   (`session_mismatch` otherwise, in `src/house/world/verify.js`), and only then does it ask World's
+   verify API.
+
+So "is it still you?" is answered with a live face at every step of a series of actions, not once at
+sign-up. A friend with their own World ID, someone holding your unlocked phone, or an assistant that
+forwards the approval link to someone else cannot approve. We ran it live: a second person's Selfie
+Check was refused and nothing was released.
 
 The site, reason and request are bound into the credential's **signal**:
 
@@ -48,8 +66,9 @@ Nothing is released on the word of a browser.
   secret; the house and the pages never see it. The house fetches an `rp_context` per request.
 - **The face check is a HORS rule on `use_code`** (`faceChecked`). No approved proof means the call
   never reaches the code that releases anything.
-- **The house polls World's bridge itself** (`src/house/world/approvals.js`); the approval page only
-  shows the QR and the World App link. The page cannot report a result.
+- **The house polls World's bridge itself** (`src/house/world/approvals.js`); the approval page (and
+  the owner's house page, which shows every pending approval live) only shows the QR and the World App
+  link. Neither page can report a result.
 - **The house verifies every proof** (`src/house/world/verify.js`) before it releases anything:
   - protocol version, `session_` id, one Selfie response with `issuer_schema_id` 11;
   - the proof's nonce equals the RP context nonce it asked for;

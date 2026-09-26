@@ -104,7 +104,7 @@ sequenceDiagram
   H->>H: rule heldCode: verified code from site? else NO_HELD_CODE
   H->>H: rule faceChecked: open approval, signal = house · site · nonce · sha256(reason, key)
   H-->>A: denied APPROVAL_REQUIRED + approval link (the challenge)
-  A-->>P: the human opens the link
+  A-->>P: the human opens the link (or scans it on the house page)
   P->>P: resolve name: agent-endpoint[mcp] must match the house
   P->>W: Selfie Check (proveSession in the setup session)
   W-->>H: proof, through World's bridge (the house polls it)
@@ -125,6 +125,8 @@ sequenceDiagram
   `https://<site>` (or a subdomain) with a text field focused, and checks this before asking and again
   after approval. It types the code one character at a time with `Input.insertText` and presses Enter.
   It never prints the code; errors are generic.
+- **No relay needed.** The house page lists every pending approval with its site, reason and QR, so
+  the owner can approve as soon as the assistant asks, without waiting for it to pass the link on.
 - **Limits.** An approval lives 3 minutes; a caller may have at most 2 pending (5 per house).
 
 ## Onboarding

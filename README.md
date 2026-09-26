@@ -52,8 +52,9 @@ Hmail keeps those keys in your house and asks you, every time, with your face.
 At the moment a code is released, the question is: *is the owner, a live person, approving this right
 now?* A passport or ID credential proves who you are, but not that you are there. An Orb check proves
 you are a unique human, once. A device check proves a phone. **A Selfie Check is a live face, every
-time**, and because Hmail uses it inside a session created at setup, it has to be *your* face. More in
-[docs/world.md](docs/world.md).
+time**. Hmail also uses IDKit's continuity check: the Selfie Check runs inside a session created at
+setup, so every release proves it is **still the same person** who set up the house, not just any
+live face. More in [docs/world.md](docs/world.md#continuity-still-you-at-every-step).
 
 ## Also: a computer that isn't yours
 
