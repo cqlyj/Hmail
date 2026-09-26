@@ -4,7 +4,8 @@ const TAB_EXPR = `JSON.stringify({
   o: location.origin,
   v: document.visibilityState,
   a: (() => {
-    const e = document.activeElement;
+    let e = document.activeElement;
+    while (e && e.shadowRoot && e.shadowRoot.activeElement) e = e.shadowRoot.activeElement;
     if (!e) return null;
     return {
       t: e.tagName,
@@ -15,6 +16,29 @@ const TAB_EXPR = `JSON.stringify({
     };
   })(),
 })`;
+
+/** Focuses the page's code field when nothing is focused: an autocomplete="one-time-code" input, else the
+ *  first empty box of a split code (4+ inputs with maxlength 1), else the only numeric input, else the only
+ *  text input. Only visible, enabled, text-like inputs count. Returns whether a field now has focus. */
+const FOCUS_EXPR = `(() => {
+  const kinds = ["", "text", "tel", "number", "password", "email", "search"];
+  const usable = (e) =>
+    !e.disabled && !e.readOnly && e.getClientRects().length > 0 && kinds.includes((e.type || "").toLowerCase());
+  const all = [...document.querySelectorAll("input")].filter(usable);
+  let pick = all.find((e) => (e.autocomplete || "").toLowerCase() === "one-time-code");
+  if (!pick) {
+    const boxes = all.filter((e) => e.maxLength === 1);
+    if (boxes.length >= 4) pick = boxes.find((e) => !e.value) || boxes[0];
+  }
+  if (!pick) {
+    const numeric = all.filter((e) => /numeric|decimal/.test(e.inputMode || ""));
+    if (numeric.length === 1) pick = numeric[0];
+  }
+  if (!pick && all.length === 1) pick = all[0];
+  if (!pick) return false;
+  pick.focus();
+  return document.activeElement === pick;
+})()`;
 
 const TEXT_INPUTS = new Set([
   "",
@@ -343,10 +367,23 @@ export async function inspectTab(port, site) {
     };
   }
   if (!fieldReady(chosen.info.a ?? null)) {
+    // Split code boxes often lose focus when the assistant switches to its terminal: focus the code field
+    // ourselves. The origin is already verified, so this can only pick a field on the site itself.
+    try {
+      if ((await chosen.page.evaluate(FOCUS_EXPR)) === true) {
+        const again = JSON.parse(String(await chosen.page.evaluate(TAB_EXPR)));
+        if (originMatches(again.o ?? "", site) && fieldReady(again.a ?? null)) {
+          closeExcept(chosen);
+          return { ok: true, page: chosen.page };
+        }
+      }
+    } catch {
+      // fall through to the refusal below
+    }
     closeExcept(null);
     return {
       ok: false,
-      reason: `no text field is focused on ${site}; click the code field first`,
+      reason: `no code field found on ${site}; open the page where the site asks for the code, click into the code box, then run type again`,
     };
   }
   closeExcept(chosen);
