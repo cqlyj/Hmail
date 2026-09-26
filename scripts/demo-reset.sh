@@ -2,7 +2,7 @@
 # Puts this computer back to "Hmail never ran here", for a from-scratch demo.
 # It archives instead of deleting: a house key owns its ENS name forever, so old
 # keys are kept under ~/.hmail-archive. It never touches ~/.hmail-p1, other HORS
-# profiles (demo, hors-luma, ...), or .env.local.
+# profiles, or .env.local.
 set -euo pipefail
 
 PORT="${HMAIL_PORT:-8390}"
