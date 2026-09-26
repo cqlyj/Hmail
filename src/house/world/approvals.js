@@ -320,6 +320,24 @@ export class ApprovalManager {
   }
 
   /**
+   * Pending approvals for the owner's house page, so the owner can scan
+   * without waiting for the assistant to relay the link.
+   * @returns {{ id: string, site: string, reason: string, worldUrl: string | null, url: string, expiresAt: string }[]}
+   */
+  pending() {
+    return [...this.items.values()]
+      .filter((approval) => this.effective(approval) === "pending")
+      .map((approval) => ({
+        id: approval.id,
+        site: approval.site,
+        reason: approval.reason,
+        worldUrl: approval.worldUrl,
+        url: approval.url,
+        expiresAt: new Date(approval.expiresAt).toISOString(),
+      }));
+  }
+
+  /**
    * @param {string} id
    * @returns {{ type: "world-selfie", approvalId: string, url: string, site: string, reason: string, expiresAt: string } | null}
    */

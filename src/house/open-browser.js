@@ -1,12 +1,27 @@
 import { spawn } from "node:child_process";
+import { readFileSync } from "node:fs";
 
+function isWsl() {
+  if (process.env.WSL_DISTRO_NAME) return true;
+  try {
+    return /microsoft/i.test(readFileSync("/proc/version", "utf8"));
+  } catch {
+    return false;
+  }
+}
+
+// On WSL, xdg-open usually hands the URL to BROWSER=explorer.exe, which exits 1
+// even on success, so xdg-open runs it a second time and two tabs open.
+// Calling explorer.exe ourselves opens exactly one.
 /** @type {[string, string[]][]} */
 const COMMANDS =
   process.platform === "win32"
     ? [["cmd", ["/c", "start", ""]]]
     : process.platform === "darwin"
       ? [["open", []]]
-      : [["wslview", []], ["xdg-open", []]];
+      : isWsl()
+        ? [["wslview", []], ["explorer.exe", []], ["/mnt/c/Windows/explorer.exe", []], ["xdg-open", []]]
+        : [["xdg-open", []]];
 
 /**
  * Best effort. Never throws.

@@ -147,10 +147,14 @@ export async function runType(argv, env) {
             return 1;
           }
           process.stdout.write(
-            "approval needed; the owner opens this link on their phone:\n",
+            "APPROVAL NEEDED: send this link to your human right now (as a QR code too, if you can).\n" +
+              "It expires in 3 minutes. They can also approve it from their Hmail page.\n",
           );
           process.stdout.write(`  ${fields.url}\n`);
           process.stdout.write(`  approval id: ${fields.id}\n`);
+          process.stdout.write(
+            "Keep this command running: it types the code into the site as soon as they approve.\n",
+          );
           approvalId = fields.id;
           announced = true;
         }

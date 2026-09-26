@@ -985,6 +985,30 @@ pre.prompt-text {
 }
 
 /* Dashboard */
+.approval-card {
+  border: 2px solid var(--vermilion);
+  background: var(--vermilion-soft);
+}
+
+.approval-item + .approval-item {
+  margin-top: 18px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.approval-site {
+  font-size: 1.5rem;
+  font-weight: 900;
+  overflow-wrap: anywhere;
+}
+
+.approval-card .scan {
+  margin-top: 12px;
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+}
+
 .house-head {
   display: flex;
   flex-wrap: wrap;

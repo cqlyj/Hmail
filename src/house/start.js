@@ -318,6 +318,7 @@ export async function startHouse(argv, env) {
         approvePair,
         denyPair: (id) => pairRequests.settle(id, false) !== null,
         activity: (limit) => audit.list(limit),
+        approvals: () => approvals.pending(),
         isOnline: () => Boolean(tunnel) && !shuttingDown,
         agents,
         isGmailConnected: () => gmailToken !== null,

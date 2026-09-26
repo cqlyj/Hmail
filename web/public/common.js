@@ -224,7 +224,7 @@
       "",
       "1. Run this command (it needs Node.js and npm; if they are missing, install Node.js 22 or newer first):",
       "   " + CLI + " up --background",
-      "2. It starts Hmail in the background and opens my Hmail page in the browser. When it prints \"Hmail is running\", tell me, and give me the page address it shows (http://localhost:8390).",
+      "2. It starts Hmail in the background and opens my Hmail page in the browser by itself, so you don't need to open it. When it prints \"Hmail is running\", tell me, and give me the page address it shows (http://localhost:8390).",
       "3. If it prints an error, show it to me.",
       "",
       "Please don't open or read anything in the ~/.hmail folder. It holds my private mail data.",
@@ -235,14 +235,21 @@
     return [
       "Please connect yourself to my Hmail house, " + name + ", so you can read my email safely.",
       "",
+      "Run everything on the computer whose Chrome you use: Hmail types login codes into that Chrome.",
+      "",
       "1. Run this and keep it running until it finishes (it needs Node.js and npm):",
       "   " + CLI + " connect " + name,
       "2. If it prints \"HUMAN ACTION REQUIRED\" with a World App link, send me that link right away (and show it as a QR code if you can). It expires in about 5 minutes. I'll scan it with World App. Keep the command running.",
       "3. If it prints a confirm number, tell me the number. I'll approve you on my Hmail page. Keep the command running until it says \"connected\".",
       "",
+      "If step 1 stops before it prints a World App link (the World registration tool it starts, @worldcoin/agentkit-cli, fails to launch), install Hmail into its own folder and run it from there instead:",
+      "   mkdir -p ~/hmail && cd ~/hmail && npm init -y && npm install node@22 github:cqlyj/hmail @worldcoin/agentkit-cli@0.2.0",
+      "   then use \"npx hmail\" (inside ~/hmail) wherever this message says " + CLI + ".",
+      "",
       "Afterwards, use the same prefix (" + CLI + ") with:",
       "- search " + name + " \"<Gmail search>\"  and  read " + name + " <id>  to read my mail. Login codes and links show up as [held · site · kind]; that's expected.",
-      "- type " + name + " --site <site> --reason \"<why>\"  when you need a login code for a site. I approve on my phone, and the code is typed straight into that site's tab in your Chrome. Never ask me to read a code to you.",
+      "- type " + name + " --site <site> --reason \"<why>\"  when you need a login code for a site. Open the site's code page in your Chrome first; that Chrome must be running with --remote-debugging-port (for example 9222).",
+      "  It prints an approval link: send it to me right away, as a QR code too if you can. It expires in 3 minutes (I can also approve it from my Hmail page). Keep type running: it types the code straight into that site's tab once I approve. Never ask me to read a code to you.",
     ].join("\n");
   }
 

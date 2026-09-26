@@ -639,9 +639,34 @@
         h("div", { class: "card flat stat" }, h("div", { class: "label", text: "Assistants" }), h("div", { class: "value", text: String(state.agents.length) })),
       );
     });
+    var approvals = state.approvals || [];
+    if (approvals.length > 0) {
+      section("approvals", [approvals.map(function (a) { return a.id; })], function () {
+        return buildApprovals(approvals);
+      });
+    }
     section("assistants", [state.agents, state.pairRequests, local.showConnect], buildAssistants);
     section("activity", [activity], buildActivity);
-    mountOrder(["head", "stats", "assistants", "activity"]);
+    mountOrder(approvals.length > 0 ? ["head", "approvals", "stats", "assistants", "activity"] : ["head", "stats", "assistants", "activity"]);
+  }
+
+  /** A login waiting for your face: scan here, no need to wait for the assistant to pass the link on. */
+  function buildApprovals(approvals) {
+    var card = h("section", { class: "card approval-card" }, h("h2", { text: approvals.length > 1 ? "Logins waiting for you" : "A login is waiting for you" }));
+    approvals.forEach(function (a) {
+      card.appendChild(
+        h(
+          "div",
+          { class: "approval-item" },
+          h("div", { class: "approval-site", text: a.site }),
+          a.reason ? h("p", { class: "reason", text: "“" + a.reason + "”" }) : null,
+          a.worldUrl
+            ? H.worldPanel(a.worldUrl, "Scan with World App to approve " + a.site + " with your face. It expires 3 minutes after your assistant asked.")
+            : h("p", {}, h("a", { class: "btn primary", href: a.url, target: "_blank", rel: "noopener", text: "Open the approval page" })),
+        ),
+      );
+    });
+    return card;
   }
 
   function buildAssistants() {
@@ -781,8 +806,8 @@
         else if (state) renderStatus();
       })
       .finally(function () {
-        var fast = !state || !setupDone() || (state.pairRequests && state.pairRequests.length > 0);
-        pollTimer = setTimeout(poll, failures >= 3 ? 6000 : fast ? 2000 : 5000);
+        // Every 2 seconds, so a login waiting for your face shows up right away.
+        pollTimer = setTimeout(poll, failures >= 3 ? 6000 : 2000);
       });
   }
 
