@@ -14,6 +14,10 @@
     "@worldcoin/agentkit-core": "0.2.1",
     "cloudflared": "0.7.3",
     "hors-sdk": "0.1.0",
+    "htmlparser2": "12.0.0",
+    "mailauth": "5.0.3",
+    "postal-mime": "3.0.1",
+    "tldts": "7.4.15",
     "viem": "2.56.3",
     "zod": "4.5.4"
   },
