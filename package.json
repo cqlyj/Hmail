@@ -2,6 +2,7 @@
   "name": "hmail",
   "version": "0.0.0",
   "private": true,
+  "license": "MIT",
   "description": "Hmail: holds login codes from your Gmail until you approve with a World ID Selfie Check (house + assistant client)",
   "type": "module",
   "bin": { "hmail": "bin/hmail.js" },
