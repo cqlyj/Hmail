@@ -47,6 +47,8 @@ For your assistant (any computer, including cloud ones):
   hmail connect <name>                      link this assistant to your World ID (once) and to your house
   hmail search <name> <query> [--max <n>]   search your mail; held codes show as [held · site · kind]
   hmail read <name> <id>                    read one mail, same redaction
+  hmail attachment <name> <id> <file> [--out <path>]
+                                            save one attachment (not from mails with held codes)
   hmail type <name> --site <site> --reason <text> [--wait-s <n>] [--no-submit]
                                             you approve on your phone, then the code is typed into the
                                             site's Chrome tab; it is never shown (Linux + Chrome with
