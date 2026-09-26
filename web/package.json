@@ -1,0 +1,9 @@
+{
+  "name": "hmail-web",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@worldcoin/idkit-core": "4.3.0",
+    "viem": "2.56.3"
+  }
+}
